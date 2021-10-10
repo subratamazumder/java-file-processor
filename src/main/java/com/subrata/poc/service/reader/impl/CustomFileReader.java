@@ -10,18 +10,19 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CustomFileReader implements CustomReader {
-    private String segmentIdentifier;
-    private String delimiterRegEx;
-    private Extractor pidExtractor;
+    private final String segmentIdentifier;
+    private final String delimiterRegEx;
+    private final Extractor pidExtractor;
     @Override
     public List<SearchResponse> read(String fileLocation) {
         Path path = Paths.get(fileLocation);
         List<SearchResponse> filteredLines = Collections.emptyList();
-        try (Stream<String> lines = Files.lines(path)) {
+        try (Stream<String> lines = Files.lines(path)) { // UTF-8 only
             filteredLines = lines
                     .filter(
                             eachLine -> {
@@ -36,6 +37,7 @@ public class CustomFileReader implements CustomReader {
                             }
                     )
                     .map(lineWithPID -> pidExtractor.extract(lineWithPID, delimiterRegEx))
+                    .filter(Objects::nonNull)
                     .collect(Collectors.toList());
         } catch (IOException e) {
             e.printStackTrace();

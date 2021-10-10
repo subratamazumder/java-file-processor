@@ -3,7 +3,7 @@ package com.subrata.poc.service.formatter.impl;
 import com.subrata.poc.service.formatter.DataFormatter;
 
 public class PatientIDFormatter implements DataFormatter {
-    private boolean isRaw;
+    private final boolean isRaw;
     @Override
     public String format(String rawPatientName) {
         if (isRaw) {
