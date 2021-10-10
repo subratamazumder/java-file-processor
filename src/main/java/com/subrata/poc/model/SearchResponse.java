@@ -1,14 +1,20 @@
 package com.subrata.poc.model;
 
 public class SearchResponse {
+    private String patientId; // unique identifier for audit/logging
     private String name;
     private String dob;
     private String gender;
 
-    private SearchResponse(String name, String dob, String gender) {
+    private SearchResponse(String patientId, String name, String dob, String gender) {
+        this.patientId = patientId;
         this.name = name;
         this.dob = dob;
         this.gender = gender;
+    }
+
+    public String getPatientId() {
+        return patientId;
     }
 
     public String getName() {
@@ -26,19 +32,22 @@ public class SearchResponse {
     @Override
     public String toString() {
         return "Response{" +
-                "name='" + name + '\'' +
-                ", dob[YYYYMMDD]='" + dob + '\'' +
-                ", gender='" + gender + '\'' +
+//                "ID='" + patientId + '\'' +", "+
+                "Name='" + name + '\'' +", "+
+                "DOB[raw:YYYYMMDD, formatted :DD/MM/YY]='" + dob + '\'' +", "+
+                "Gender='" + gender + '\''+
                 '}';
     }
 
     public static class ResponseBuilder {
         // builder code
+        private String patientId;
         private String name;
         private String dob;
         private String gender;
 
-        public ResponseBuilder(String name) {
+        public ResponseBuilder(String patientId, String name) {
+            this.patientId = patientId;
             this.name = name;
         }
 
@@ -53,7 +62,7 @@ public class SearchResponse {
         }
 
         public SearchResponse build() {
-            return new SearchResponse(this.name, this.dob, this.gender);
+            return new SearchResponse(this.patientId, this.name, this.dob, this.gender);
         }
     }
 }

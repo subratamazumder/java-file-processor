@@ -15,8 +15,8 @@ import java.util.stream.Stream;
 
 public class Main {
     final static String FILE_PATH = "/Users/subratamazumder/workspace/file-processor";
-    final static String FILE_NAME = "ORU_R01-4.txt";
-    final static String DELIMETER_REGEX = "\\|";
+    final static String FILE_NAME = "ORU_R01-3.txt";
+    final static String DELIMITER_REGEX = "\\|";
     final static String TEST_RECORD = "PID|1||PATID5421^^^NIST MPI^MR||Wilson^Patrice^Natasha^^^^L||19820304|F||2106-3^White^HL70005|144 East 12th Street^^Los Angeles^CA^90012^^H||^PRN^PH^^^203^2290210|||||||||N^Not Hispanic or Latino^HL70189";
     final static boolean isRaw = false;
 
@@ -26,7 +26,6 @@ public class Main {
         Path filePath = Paths.get(FILE_PATH, FILE_NAME);
         int recordNum = 0;
         try (Stream<String> lines = Files.lines(filePath)) {
-
             List<SearchResponse> filteredLines = lines
                     .filter(
                             eachLine -> {
@@ -40,10 +39,10 @@ public class Main {
                                 return false;
                             }
                     )
-                    .map(lineWithPID -> extractor.extract(lineWithPID, DELIMETER_REGEX))
+                    .map(lineWithPID -> extractor.extract(lineWithPID, DELIMITER_REGEX))
                     .collect(Collectors.toList());
             System.out.println("Search Result Count-" + filteredLines.size());
-            System.out.println("Search Result" + filteredLines);
+            System.out.println("Search Result [Raw Data-" + isRaw + "]" + filteredLines);
         } catch (IOException e) {
             e.printStackTrace();
         }
