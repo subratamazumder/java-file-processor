@@ -1,17 +1,14 @@
 package com.subrata.poc;
 
 import com.subrata.poc.model.SearchResponse;
-import com.subrata.poc.service.Extractor;
+import com.subrata.poc.service.extractor.Extractor;
+import com.subrata.poc.service.extractor.impl.PIDExtractor;
+import com.subrata.poc.service.reader.CustomReader;
+import com.subrata.poc.service.reader.impl.CustomFileReader;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Main {
     final static String FILE_PATH = "/Users/subratamazumder/workspace/file-processor";
@@ -22,30 +19,11 @@ public class Main {
 
     public static void main(String[] args) {
         Instant start = Instant.now();
-        Extractor extractor = new Extractor(isRaw);
-        Path filePath = Paths.get(FILE_PATH, FILE_NAME);
-        int recordNum = 0;
-        try (Stream<String> lines = Files.lines(filePath)) {
-            List<SearchResponse> filteredLines = lines
-                    .filter(
-                            eachLine -> {
-                                try {
-                                    if (!eachLine.isEmpty() && eachLine.contains("PID"))
-                                        return true;
-                                } catch (Exception anyException) {
-                                    System.out.println("Exception in Filtering records; continue");
-                                    anyException.printStackTrace();
-                                }
-                                return false;
-                            }
-                    )
-                    .map(lineWithPID -> extractor.extract(lineWithPID, DELIMITER_REGEX))
-                    .collect(Collectors.toList());
-            System.out.println("Search Result Count-" + filteredLines.size());
-            System.out.println("Search Result [Raw Data-" + isRaw + "]" + filteredLines);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Extractor pidExtractor = new PIDExtractor(isRaw);
+        CustomReader fileReader = new CustomFileReader(FILE_PATH, FILE_NAME, DELIMITER_REGEX, pidExtractor);
+        List<SearchResponse> searchResponsesList = fileReader.read();
+        System.out.println("Search Result Count-" + searchResponsesList.size());
+        System.out.println("Search Result [Raw Data-" + isRaw + "]" + searchResponsesList);
         System.out.println("Total Execution Time (ms)-" + Duration.between(start, Instant.now()).toMillis());
     }
 }
