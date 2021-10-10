@@ -2,6 +2,7 @@ package com.subrata.poc.util;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.time.Instant;
 
 public class LoggerUtil {
     // Reset
@@ -25,14 +26,14 @@ public class LoggerUtil {
         StringWriter sw = new StringWriter();
         e.printStackTrace(new PrintWriter(sw));
         String exceptionAsString = sw.toString();
-        System.out.println(RED + exceptionAsString + RESET);
+        System.out.println(Instant.now()+" "+RED + exceptionAsString + RESET);
     }
 
     public static void logSuccess(String msg) {
-        System.out.println(GREEN + msg + RESET);
+        System.out.println(Instant.now()+" "+GREEN + msg + RESET);
     }
 
     public static void logWarning(String msg) {
-        System.out.println(YELLOW + msg + RESET);
+        System.out.println(Instant.now()+" "+YELLOW + msg + RESET);
     }
 }

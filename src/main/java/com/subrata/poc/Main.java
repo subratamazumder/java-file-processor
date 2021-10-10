@@ -5,24 +5,23 @@ import com.subrata.poc.service.extractor.Extractor;
 import com.subrata.poc.service.extractor.impl.PIDExtractor;
 import com.subrata.poc.service.reader.CustomReader;
 import com.subrata.poc.service.reader.impl.CustomFileReader;
+import com.subrata.poc.service.reader.impl.CustomFileReaderBuffReader;
+import com.subrata.poc.service.writer.CustomWriter;
+import com.subrata.poc.service.writer.impl.CustomFileWriter;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 
-import static com.subrata.poc.util.LoggerUtil.logBanner;
-import static com.subrata.poc.util.LoggerUtil.logWarning;
+import static com.subrata.poc.util.LoggerUtil.*;
+import static com.subrata.poc.util.LoggerUtil.logSuccess;
 
 public class Main {
-    final static String FILE_PATH = "/Users/subratamazumder/workspace/file-processor";
-    final static String FILE_NAME4 = "test-optional-field-invalid-dob.txt";
-    final static String FILE_NAME = "test-zero-pid-records.txt";
-    final static String FILE_NAME2 = "test-required-field-missing.txt";
-    final static String FILE_NAME3 = "test-optional-field-missing-gender.txt";
     final static String DELIMITER_REGEX = "|";
-    final static String SEGMENT_IDENTIFIER = "PID";
-    final static boolean RESULT_FORMAT_INDICATOR = false;
-
     public static void main(String[] args) {
         logBanner(System.lineSeparator() + System.lineSeparator() + "************************* Welcome To Java8 File Processor ****************************");
         logBanner(System.lineSeparator() + "Developed by Subrata Mazumder @ https://subratamazumder.github.io" + System.lineSeparator());
@@ -32,15 +31,38 @@ public class Main {
             logWarning("e.g.; TO Process PID Segment : java -jar java-file-processor-1.0-SNAPSHOT.jar PID /mydir/files/file.txt true");
             return;
         }
+        // extract command line args
         String filePath = args[0];
         String segmentIdentifier = args[1];
         boolean resultFormatIndicator = Boolean.parseBoolean(args[2]);
-        Extractor pidExtractor = new PIDExtractor(!resultFormatIndicator);
-        CustomReader fileReader = new CustomFileReader(segmentIdentifier, DELIMITER_REGEX, pidExtractor);
-//        CustomReader fileReader = new CustomFileReader(SEGMENT_IDENTIFIER, DELIMITER_REGEX, pidExtractor);
-        List<SearchResponse> searchResponsesList = fileReader.read(filePath);
-        System.out.println("Search Result Count-" + searchResponsesList.size());
-        System.out.println("Search Result [Formatted Data-" + resultFormatIndicator + "]" + searchResponsesList);
-        System.out.println("Total Execution Time (ms)-" + Duration.between(start, Instant.now()).toMillis());
+
+        List<SearchResponse> searchResponsesList = Collections.emptyList();
+        switch (segmentIdentifier) {
+            case "PID":
+                Extractor pidExtractor = new PIDExtractor(!resultFormatIndicator);
+                CustomReader fileReader = new CustomFileReader(segmentIdentifier, DELIMITER_REGEX, pidExtractor);
+//                CustomReader fileReader = new CustomFileReaderBuffReader(segmentIdentifier, DELIMITER_REGEX, pidExtractor);
+                searchResponsesList = fileReader.read(filePath);
+                logSuccess("Read & Extraction Execution Time (ms) : " + Duration.between(start, Instant.now()).toMillis());
+                CustomWriter customWriter = new CustomFileWriter(getOutPutFileName(filePath,resultFormatIndicator));
+                customWriter.write(searchResponsesList);
+                logSuccess("Write Execution Time (ms) : " + Duration.between(start, Instant.now()).toMillis());
+                break;
+            default:
+                logWarning(String.format("Quiting, unsupported Segment Identifier : [%s]",segmentIdentifier));
+                break;
+        }
+        logSuccess("Search Result Count : " + searchResponsesList.size());
+        logSuccess("Total Execution Time (ms) : " + Duration.between(start, Instant.now()).toMillis());
+    }
+    private  static String getOutPutFileName(String inputFilePath, boolean resultFormatIndicator){
+        Path path = Paths.get(inputFilePath);
+        String fileDirectory = path.getParent().toString();
+        String fileName = path.getFileName().toString();
+        if (resultFormatIndicator){
+            return fileDirectory.concat(File.separator).concat("formatted-output-").concat(fileName);
+        } else {
+            return fileDirectory.concat(File.separator).concat("raw-output-").concat(fileName);
+        }
     }
 }

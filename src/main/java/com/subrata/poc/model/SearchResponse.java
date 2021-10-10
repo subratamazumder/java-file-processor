@@ -31,12 +31,12 @@ public class SearchResponse {
 
     @Override
     public String toString() {
-        return "Response{" +
+        return "{" +
 //                "ID='" + patientId + '\'' +", "+
                 "Name='" + name + '\'' +", "+
                 "DOB[raw:YYYYMMDD, formatted :DD/MM/YY]='" + dob + '\'' +", "+
                 "Gender='" + gender + '\''+
-                '}';
+                '}'+"\n";
     }
 
     public static class ResponseBuilder {
