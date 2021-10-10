@@ -1,4 +1,5 @@
 # java-file-processor
+## Solution Design
 This solution has been broken into 4 core extendable components.
 - File Reader 
 
@@ -18,3 +19,14 @@ Validates data attribute as per Optionality defined in requirement sheet & along
 
 
 ![programming-excercise (1)](https://user-images.githubusercontent.com/18535676/136686436-b9030566-084e-4b9f-a77a-a37e6103aaed.png)
+
+## Testing via Java layer
+```console
+ Usage : $java -jar java-file-processor-<version>.jar <path to file> <Segment Identified {allowed only PID for now}> <formatSearchResult {allowed only true or false}>
+ e.g.; TO Process PID Segment with formatted search result : java -jar java-file-processor-1.0-SNAPSHOT.jar PID /mydir/files/file.txt true
+```
+## Testing via Shell Script layer
+```console
+ Usage : $ ./pid-file-processor.sh  <path to file> <formatSearchResult {allowed only true or false}>
+ e.g.; TO Process PID Segment with formatted search result : $ ./pid-file-processor.sh /mydir/files/file.txt true
+```
