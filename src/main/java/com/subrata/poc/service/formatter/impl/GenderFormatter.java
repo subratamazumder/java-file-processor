@@ -4,6 +4,8 @@ import com.subrata.poc.model.Gender;
 import com.subrata.poc.service.formatter.DataFormatter;
 import com.subrata.poc.validator.CustomValidator;
 
+import static com.subrata.poc.util.LoggerUtil.logWarning;
+
 public class GenderFormatter implements DataFormatter {
     private final boolean isRaw;
     private final CustomValidator genderValidator;
@@ -22,7 +24,7 @@ public class GenderFormatter implements DataFormatter {
                 return Gender.valueOf(rawGender).label;
             }
         } else {
-            System.out.println(String.format("Invalid Gender; continue [%s]",rawGender));
+            logWarning(String.format("Invalid Gender; continue [%s]",rawGender));
             return EMPTY_STRING;
         }
     }

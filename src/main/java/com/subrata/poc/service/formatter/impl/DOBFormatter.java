@@ -5,6 +5,8 @@ import com.subrata.poc.validator.CustomValidator;
 
 import java.time.format.DateTimeFormatter;
 
+import static com.subrata.poc.util.LoggerUtil.logWarning;
+
 public class DOBFormatter implements DataFormatter {
     final private String RAW_DATE_FORMAT = "yyyyMMdd";
     final private String PRETTY_DATE_FORMAT = "dd/MM/yy";
@@ -26,7 +28,7 @@ public class DOBFormatter implements DataFormatter {
                 return PRETTY_DATE_FORMATTER.format(RAW_DATE_FORMATTER.parse(rawDob.substring(0,8)));
             }
         } else {
-            System.out.println(String.format("Invalid DOB; continue [%s]",rawDob));
+            logWarning(String.format("Invalid DOB; continue [%s]",rawDob));
             return EMPTY_STRING;
         }
     }

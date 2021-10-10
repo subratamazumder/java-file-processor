@@ -11,6 +11,9 @@ import com.subrata.poc.validator.impl.DobValidator;
 import com.subrata.poc.validator.impl.GenderValidator;
 import com.subrata.poc.validator.impl.PatientNameValidator;
 
+import static com.subrata.poc.util.LoggerUtil.logError;
+import static com.subrata.poc.util.LoggerUtil.logWarning;
+
 public class PIDExtractor implements Extractor {
     final private boolean isRaw;
     final private DataFormatter patientNameFormatter;
@@ -35,24 +38,24 @@ public class PIDExtractor implements Extractor {
             int itemCount = splittedData.length;
 //            printRecordArray(splittedData);
             //extract patientId & patientName - required field
-            if(itemCount >= PATIENT_NAME_PID_SEQ) {
+            if (itemCount >= PATIENT_NAME_PID_SEQ) {
                 patientId = patientIDFormatter.format(splittedData[PATIENT_ID_PID_SEQ]);
                 name = patientNameFormatter.format(splittedData[PATIENT_NAME_PID_SEQ]);
-                if (!patientId.isEmpty() && !name.isEmpty()){
-                    responseBuilder = new SearchResponse.ResponseBuilder(patientId,name);
-                }else {
-                    System.out.println(String.format("Invalid record; continue"));
+                if (!patientId.isEmpty() && !name.isEmpty()) {
+                    responseBuilder = new SearchResponse.ResponseBuilder(patientId, name);
+                } else {
+                    logWarning(String.format("Invalid record; continue"));
                     return null;
                 }
 
                 //extract dob - optional field
 
-                if(itemCount >= PATIENT_DOB_PID_SEQ) {
+                if (itemCount >= PATIENT_DOB_PID_SEQ) {
                     dob = dobFormatter.format(splittedData[PATIENT_DOB_PID_SEQ]);
                     responseBuilder = responseBuilder.withDob(dob);
                 }
                 //extract gender - optional field
-                if(itemCount >= PATIENT_GENDER_PID_SEQ) {
+                if (itemCount >= PATIENT_GENDER_PID_SEQ) {
                     gender = genderFormatter.format(splittedData[PATIENT_GENDER_PID_SEQ]);
                     responseBuilder = responseBuilder.withGender(gender);
                 }
@@ -60,10 +63,10 @@ public class PIDExtractor implements Extractor {
                 searchResponse = responseBuilder.build();
             } else {
                 //log error continue
-                System.out.println("Required fields are missing");
+                logError("Required fields are missing; continue", new Exception("Required fields are missing"));
             }
         } catch (Exception anyException) {
-            System.out.println("Exception in Extractor.extract(); continue");
+            logError("Exception in Extractor.extract(); continue", anyException);
             anyException.printStackTrace();
         }
         return searchResponse;

@@ -3,6 +3,8 @@ package com.subrata.poc.service.formatter.impl;
 import com.subrata.poc.service.formatter.DataFormatter;
 import com.subrata.poc.validator.CustomValidator;
 
+import static com.subrata.poc.util.LoggerUtil.logWarning;
+
 public class PatientNameFormatter implements DataFormatter {
     private final boolean isRaw;
     private final CustomValidator patientNameValidator;
@@ -16,7 +18,7 @@ public class PatientNameFormatter implements DataFormatter {
                 return rawPatientName.replaceAll("\\^+", " ").trim();
             }
         } else {
-            System.out.println(String.format("Invalid Name; continue [%s]",rawPatientName));
+            logWarning(String.format("Invalid Name; continue [%s]",rawPatientName));
             return EMPTY_STRING;
         }
     }
