@@ -13,8 +13,7 @@ import com.subrata.poc.validator.impl.PatientNameValidator;
 
 import java.time.Instant;
 
-import static com.subrata.poc.util.LoggerUtil.logError;
-import static com.subrata.poc.util.LoggerUtil.logWarning;
+import static com.subrata.poc.util.LoggerUtil.*;
 
 public class PIDExtractor implements Extractor {
     final private boolean isRaw;

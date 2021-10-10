@@ -26,8 +26,6 @@ public class CustomFileReader implements CustomReader {
 //        Instant start = Instant.now();
         Path path = Paths.get(fileLocation);
         List<SearchResponse> filteredLines = Collections.emptyList();
-        logSuccess("Input File Name : " + fileLocation);
-        logSuccess("Segment Identifier : " + this.getSegmentIdentifier());
         try (Stream<String> lines = Files.lines(path)) { // UTF-8 only
             filteredLines = lines
                     .filter(
