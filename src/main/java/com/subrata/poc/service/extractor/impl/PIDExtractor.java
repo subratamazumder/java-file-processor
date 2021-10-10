@@ -11,6 +11,8 @@ import com.subrata.poc.validator.impl.DobValidator;
 import com.subrata.poc.validator.impl.GenderValidator;
 import com.subrata.poc.validator.impl.PatientNameValidator;
 
+import java.time.Instant;
+
 import static com.subrata.poc.util.LoggerUtil.logError;
 import static com.subrata.poc.util.LoggerUtil.logWarning;
 
@@ -33,6 +35,7 @@ public class PIDExtractor implements Extractor {
         int PATIENT_NAME_PID_SEQ = 5;
         int PATIENT_DOB_PID_SEQ = 7;
         int PATIENT_GENDER_PID_SEQ = 8;
+//        Instant start = Instant.now();
         try {
             String[] splittedData = lineWithPID.split(delimiter);
             int itemCount = splittedData.length;
@@ -67,8 +70,8 @@ public class PIDExtractor implements Extractor {
             }
         } catch (Exception anyException) {
             logError("Exception in Extractor.extract(); continue", anyException);
-            anyException.printStackTrace();
         }
+//        logSuccess("Extraction Execution Time (ms) : " + Duration.between(start, Instant.now()).toMillis());
         return searchResponse;
     }
 

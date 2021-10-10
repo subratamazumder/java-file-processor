@@ -3,12 +3,9 @@ package com.subrata.poc.service.writer.impl;
 import com.subrata.poc.model.SearchResponse;
 import com.subrata.poc.service.writer.CustomWriter;
 
-import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.List;
 
 import static com.subrata.poc.util.LoggerUtil.logError;
@@ -32,6 +29,7 @@ public class CustomFileWriter implements CustomWriter {
 
     @Override
     public void write(List<SearchResponse> searchResponseList) {
+//        Instant start = Instant.now();
         try {
             searchResponseList.stream().forEach(
                     //{Name='grceue Patrice Natasha L', DOB[raw:YYYYMMDD, formatted :DD/MM/YY]='04/03/59', Gender='Female'}
@@ -43,5 +41,6 @@ public class CustomFileWriter implements CustomWriter {
             printWriter.close();
         }
         logSuccess("Output File Name : " + this.fileName);
+//        logSuccess("Write Execution Time (ms) : " + Duration.between(start, Instant.now()).toMillis());
     }
 }

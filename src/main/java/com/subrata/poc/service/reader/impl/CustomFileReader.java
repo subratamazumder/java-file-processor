@@ -14,14 +14,20 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.subrata.poc.util.LoggerUtil.logError;
+import static com.subrata.poc.util.LoggerUtil.logSuccess;
+
 public class CustomFileReader implements CustomReader {
     private final String segmentIdentifier;
     private final String delimiterRegEx;
     private final Extractor pidExtractor;
     @Override
     public List<SearchResponse> read(String fileLocation) {
+//        Instant start = Instant.now();
         Path path = Paths.get(fileLocation);
         List<SearchResponse> filteredLines = Collections.emptyList();
+        logSuccess("Input File Name : " + fileLocation);
+        logSuccess("Segment Identifier : " + this.getSegmentIdentifier());
         try (Stream<String> lines = Files.lines(path)) { // UTF-8 only
             filteredLines = lines
                     .filter(
@@ -30,8 +36,7 @@ public class CustomFileReader implements CustomReader {
                                     if (!eachLine.isEmpty() && eachLine.contains(segmentIdentifier))
                                         return true;
                                 } catch (Exception anyException) {
-                                    System.out.println("Exception in Filtering records; continue");
-                                    anyException.printStackTrace();
+                                    logError("Exception in Filtering records; continue", anyException);
                                 }
                                 return false;
                             }
@@ -40,9 +45,14 @@ public class CustomFileReader implements CustomReader {
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());
         } catch (IOException e) {
-            e.printStackTrace();
+            logError("Exception in read records; exit", e);
         }
+//        logSuccess("Read & Extraction Execution Time (ms) : " + Duration.between(start, Instant.now()).toMillis());
         return filteredLines;
+    }
+
+    public String getSegmentIdentifier() {
+        return segmentIdentifier;
     }
 
     public CustomFileReader(String segmentIdentifier, String delimiter, Extractor pidExtractor) {

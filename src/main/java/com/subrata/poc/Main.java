@@ -23,9 +23,10 @@ import static com.subrata.poc.util.LoggerUtil.logSuccess;
 public class Main {
     final static String DELIMITER_REGEX = "|";
     public static void main(String[] args) {
+        Instant start = Instant.now();
         logBanner(System.lineSeparator() + System.lineSeparator() + "************************* Welcome To Java8 File Processor ****************************");
         logBanner(System.lineSeparator() + "Developed by Subrata Mazumder @ https://subratamazumder.github.io" + System.lineSeparator());
-        Instant start = Instant.now();
+
         if (args.length < 3) {
             logWarning("Usage : $java -jar java-file-processor-<version>.jar <path to file> <Segment Identified {allowed only PID for now}> <formatSearchResult {allowed only true or false}>");
             logWarning("e.g.; TO Process PID Segment : java -jar java-file-processor-1.0-SNAPSHOT.jar PID /mydir/files/file.txt true");
@@ -43,10 +44,8 @@ public class Main {
                 CustomReader fileReader = new CustomFileReader(segmentIdentifier, DELIMITER_REGEX, pidExtractor);
 //                CustomReader fileReader = new CustomFileReaderBuffReader(segmentIdentifier, DELIMITER_REGEX, pidExtractor);
                 searchResponsesList = fileReader.read(filePath);
-                logSuccess("Read & Extraction Execution Time (ms) : " + Duration.between(start, Instant.now()).toMillis());
                 CustomWriter customWriter = new CustomFileWriter(getOutPutFileName(filePath,resultFormatIndicator));
                 customWriter.write(searchResponsesList);
-                logSuccess("Write Execution Time (ms) : " + Duration.between(start, Instant.now()).toMillis());
                 break;
             default:
                 logWarning(String.format("Quiting, unsupported Segment Identifier : [%s]",segmentIdentifier));
