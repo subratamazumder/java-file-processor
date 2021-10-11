@@ -26,7 +26,10 @@ Formats data based on configurable search indicator whether raw data needs forma
 Validates data attribute as per Optionality defined in requirement sheet & along with basic length & character type checks. It also formats the date field & gender field to a more human readable format.
 
 ![programming-excercise (3)](https://user-images.githubusercontent.com/18535676/136715931-8a91a5b5-a033-46e5-9435-4f82930a1d89.png)
-
+## Build Library Locally
+```console
+$ mvn clean install
+```
 ## Testing via Java layer
 ```console
  Usage : $$java -jar java-file-processor-<version>.jar <path to file> <Segment Identified {allowed only PID for now}> <formatSearchResult {allowed only true or false (default=true)}> <writeToFile {allowed only true or false(default=false)}>
