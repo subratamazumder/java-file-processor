@@ -1,3 +1,4 @@
+![GitHub](https://img.shields.io/github/license/subratamazumder/java-file-processor?style=for-the-badge)
 # java-file-processor
 ## Solution Design
 This solution has been broken into 6 core extendable components.
