@@ -1,10 +1,10 @@
 package com.subrata.poc.model;
 
 public class SearchResponse {
-    private String patientId; // unique identifier for audit/logging
-    private String name;
-    private String dob;
-    private String gender;
+    final private String patientId; // unique identifier for audit/logging
+    final private String name;
+    final private String dob;
+    final private String gender;
 
     private SearchResponse(String patientId, String name, String dob, String gender) {
         this.patientId = patientId;
@@ -41,8 +41,8 @@ public class SearchResponse {
 
     public static class ResponseBuilder {
         // builder code
-        private String patientId;
-        private String name;
+        final private String patientId;
+        final private String name;
         private String dob;
         private String gender;
 
