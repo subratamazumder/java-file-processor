@@ -11,9 +11,8 @@ import com.subrata.poc.validator.impl.DobValidator;
 import com.subrata.poc.validator.impl.GenderValidator;
 import com.subrata.poc.validator.impl.PatientNameValidator;
 
-import java.time.Instant;
-
-import static com.subrata.poc.util.LoggerUtil.*;
+import static com.subrata.poc.util.LoggerUtil.logError;
+import static com.subrata.poc.util.LoggerUtil.logWarning;
 
 public class PIDExtractor implements Extractor {
     final private boolean isRaw;
@@ -46,7 +45,7 @@ public class PIDExtractor implements Extractor {
                 if (!patientId.isEmpty() && !name.isEmpty()) {
                     responseBuilder = new SearchResponse.ResponseBuilder(patientId, name);
                 } else {
-                    logWarning(String.format("Invalid record; continue"));
+                    logWarning(String.format("Invalid record; continue [PatientID-%s]",patientId));
                     return null;
                 }
 

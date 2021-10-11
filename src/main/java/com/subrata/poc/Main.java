@@ -5,7 +5,6 @@ import com.subrata.poc.service.extractor.Extractor;
 import com.subrata.poc.service.extractor.impl.PIDExtractor;
 import com.subrata.poc.service.reader.CustomReader;
 import com.subrata.poc.service.reader.impl.CustomFileReader;
-import com.subrata.poc.service.reader.impl.CustomFileReaderBuffReader;
 import com.subrata.poc.service.writer.CustomWriter;
 import com.subrata.poc.service.writer.impl.CustomFileWriter;
 import com.subrata.poc.service.writer.impl.CustomStdoutWriter;
@@ -19,7 +18,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.subrata.poc.util.LoggerUtil.*;
-import static com.subrata.poc.util.LoggerUtil.logSuccess;
 
 public class Main {
     final static String DELIMITER_REGEX = "|";

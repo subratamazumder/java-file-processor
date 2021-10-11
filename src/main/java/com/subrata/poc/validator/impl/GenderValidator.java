@@ -2,7 +2,6 @@ package com.subrata.poc.validator.impl;
 
 import com.subrata.poc.validator.CustomValidator;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GenderValidator implements CustomValidator {

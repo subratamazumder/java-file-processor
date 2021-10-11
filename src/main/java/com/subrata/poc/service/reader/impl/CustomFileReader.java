@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.subrata.poc.util.LoggerUtil.logError;
-import static com.subrata.poc.util.LoggerUtil.logSuccess;
 
 public class CustomFileReader implements CustomReader {
     private final String segmentIdentifier;
@@ -47,10 +46,6 @@ public class CustomFileReader implements CustomReader {
         }
 //        logSuccess("Read & Extraction Execution Time (ms) : " + Duration.between(start, Instant.now()).toMillis());
         return filteredLines;
-    }
-
-    public String getSegmentIdentifier() {
-        return segmentIdentifier;
     }
 
     public CustomFileReader(String segmentIdentifier, String delimiter, Extractor pidExtractor) {

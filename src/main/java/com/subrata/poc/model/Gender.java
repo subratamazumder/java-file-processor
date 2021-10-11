@@ -6,7 +6,7 @@ public enum Gender {
     M("Male"),
     N("Not applicable"),
     O("Other"),
-    U("Unknown");;
+    U("Unknown");
     public final String label;
 
     private Gender(String label) {
